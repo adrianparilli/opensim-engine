@@ -1,35 +1,66 @@
 # OpenSim Engine -- Readme
 
 ## Overwiew:
-
-OpenSim Engine is intended to run OpenSim based simulators in ways it can be accessed and managed easily, and looks to be part of a more elaborated code in order to deploy and configure Sims or Grids automatically, in the Docker way. Commits are welcome!
+OpenSim Engine is intended to run OpenSim based simulators
+Although its main goal is to be part of a more elaborated solution to deploy simulators and/or grids, it can be used *as is* to test and even run (very simple) configurations inside containers.
 
 ## Features:
+- Built upon the latest version of Mono (6.xx)
+- Contains minimal tools to download and manipulate ZIP compressed binaries inside the container
+- It runs OpenSim.exe onto a detachable console you can access the main screen, see status and use CLI.
+- Allows both standalone sims/grids (e.g. OpenSim, DivaDistro), and also connect your sims to existing grids (e.g. OSGrid)
 
-Runs standalone sims/grids, and allows to connect your sims to an existing grid
-It can be connected to a database server if needed.
+NOTE: The image does not provide the simulator files, you have to provide them yourself.
 
-## Content:
+## Requirements:
+- Docker Engine. See [Docker Documentation](https://docs.docker.com/get-docker/) for further instructions
+- Main simulator folder tree uncompressed, and accessible by Docker with write permissions
 
-- The latest version of Mono
-- Unzip, to unpackage many available simulators that come in ZIP format
-- GNU Screen, in order to run OpenSim.exe on it, being able to attach / detach the console without close the program.
+### Basic Usage
+Useful for tests, and also for running very simple configurations (e.g. standalone and/or default SQLite setup):
 
-## Basic Requirements:
+`docker run -it --restart=<restart-policy> --name <container-name> -v </path-to-main-folder>:/opensim -p 9XXX[-9YYY]:9XXX[-9YYY]/tcp -p 9XXX[-9YYY]:9XXX[-9YYY]/udp adrianparilli/opensim-engine[:<label>]`
 
-- Docker Engine. See [Docker Documentation](https://docs.docker.com/get-docker/) for further instructions.
-- Your OpenSim based simulator on a folder (a new or existing install)
+Where:
+`<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
+`<container-name>`: Name you want to give for this container
+`</path-to-main-folder>`: Absolute path to the main simulator folder tree (containing inside 'bin' and 'doc' directories)
+`9XXX[-9YYY]:9XXX[-9YYY]`: Port [or ports range] mapped to this container from the host, in order to connect to simulator(s) from your viewer. Both tcp and udp are need to be declared apart.
+`label`: If even provisioned, will use a specific version of this image. It should not be needed.
 
-## Advanced Requirements:
+#### Example:
 
-### Database Server
+`docker run -it --name opensim-test -v /data/docker/opensim:/opensim -p 9000:9000/tcp -p 9000:9000/udp adrianparilli/opensim-engine`
 
-Connecting the simulator to a databse does not differ much from standard setup specified at [OpenSim Database Settings](http://opensimulator.org/wiki/Database_Settings), excepting by the fact Opensim Engine and DB Server will always reside on different hosts, and will communicate via network. You need to setup both OpenSim config files (a.k.a. DB client) and your DB Server considering this fact.
+The image will be downloaded and when runs, you will get attached to OpenSim.exe's first run CLI, being able to see the output and send commands to the simulator (e.g. setup, etc.)
 
-In many scenarios, you will want (or at least results practical) to run this DB Server inside a container as well. IF this is the case, additional Docker setup to ensure a virtual network where both containers can communicate is essential.
+To *detach* from the console, simply press `Ctrl+P` and `Ctrl+Q` (or `Ctrl+P+Q`) to exit. The simulator will keep running in background.
 
-Finally, as an up and running DB Server is a pre-requisite for OpenSim to start, it is ideal to create a Stack with Docker Compose or Kubernetes, where the DB takes precedence starting.
+To *attach* to this container again: `docker attach <container-name>`
 
-Opensim Engine has been tested and runs nice with the [*Official MySQL Docker Images*](https://hub.docker.com/_/mysql)
+To *start|restart|stop* the container: `docker start|restart|stop <container-name>`
+(NOTE: To stop|restart the simulator gracefully, you *must* attach the console and send the `shutdown` command before!)
 
-*As of OpenSim 0.9.1.1 and based software (e.g. OSGrid), 'latest' MySQL images won't work (Client will have authentication issues), so it is recommended to use 5.7.xx images instead, until OpenSim code is updated for MySQL version 8.*
+To *delete* the container with `docker rm <container-name>`. Simulator files will be kept.
+
+
+From your viewer, you should be able to access your simulator once configured via the local ip or dns name and configured port where Docker is running.
+Example: http://localhost:9000
+
+
+### Advanced Usage
+This section is an ongoing work (commits are welcome!). By know, it's useful to mention that by using this image, you will be able to:
+
+- Dump a clean simulator folder tree onto a Docker volume or directly inside the container, and mount just the files you need to manage
+
+- Customize your entire settings firat, and dump either to a volume or inside the container, and run without mounts
+
+- You can add more mount points to import/export files (e.g. terrains, OARs, IARs, etc.)
+
+- You can connect to an existing DB server (e.g. MySQL) and this can be also another container
+
+- You can use this image *to build and deploy your own OpenSim Stack* with Docker composer, Kubernetes, etc.
+
+# TO DO
+
+- Create an entrypoint.sh to 'shutdown' the simulator gracefully.
