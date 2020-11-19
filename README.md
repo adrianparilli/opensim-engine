@@ -19,11 +19,17 @@ NOTE: The image does not provide simulator files, you have to download/uncompres
 Useful for tests, and also for running very simple configurations (e.g. standalone and/or default SQLite setup):
 
 `docker run \`
+
 `-it --restart=<restart-policy> \`
+
 `--name <container-name> \`
+
 `-v </path-to-main-folder>:/opensim \`
+
 `-p 9XXX[-9YYY]:9XXX[-9YYY]/tcp \`
+
 `-p 9XXX[-9YYY]:9XXX[-9YYY]/udp \`
+
 `adrianparilli/opensim-engine[:<label>]`
 
 Where:
