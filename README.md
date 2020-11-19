@@ -67,4 +67,4 @@ This section is an ongoing work (commits are welcome!). By now, it's useful to m
 
 ## TO DO
 
-- Create an entrypoint.sh to 'shutdown' the simulator gracefully.
+- Create `entrypoint.sh` to shut down the simulator gracefully.
