@@ -33,15 +33,15 @@ Useful for tests, and also for running very simple configurations (e.g. standalo
 `adrianparilli/opensim-engine[:<label>]`
 
 Where:
-`<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
+- `<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
 
-`<container-name>`: Name you want to give for this container
+- `<container-name>`: Name you want to give for this container
 
-`</path-to-main-folder>`: Absolute path to the main simulator folder tree (containing inside 'bin' and 'doc' directories)
+- `</path-to-main-folder>`: Absolute path to the main simulator folder tree (containing inside 'bin' and 'doc' directories)
 
-`9XXX[-9YYY]:9XXX[-9YYY]`: Port [or ports range] mapped to this container from the host, in order to connect to simulator(s) from your viewer. Both tcp and udp are need to be declared apart.
+- `9XXX[-9YYY]:9XXX[-9YYY]`: Port [or ports range] mapped to this container from the host, in order to connect to simulator(s) from your viewer. Both tcp and udp are need to be declared apart.
 
-`label`: If even provisioned, will use a specific version of this image. It should not be needed.
+- `label`: If even provisioned, will use a specific version of this image. It should not be needed.
 
 ### Example:
 
@@ -49,33 +49,26 @@ Where:
 
 The image will be downloaded and when runs, you will get attached to OpenSim.exe's first run CLI, being able to see the output and send commands to the simulator (e.g. setup, etc.)
 
-To *detach* from the console, simply press `Ctrl+P` and `Ctrl+Q` (or `Ctrl+P+Q`) to exit. The simulator will keep running in background.
+- *Detach* from the console by pressing `Ctrl+P` and `Ctrl+Q`or `Ctrl+P+Q` (Simulator will keep running in background)
 
-To *attach* to this container again: `docker attach <container-name>`
+- *Attach* to the container again: `docker attach <container-name>`
 
-To *start|restart|stop* the container: `docker start|restart|stop <container-name>`
-(NOTE: To stop|restart the simulator gracefully, you *must* attach the console and send the `shutdown` command before!)
+- *Start, restart or stop* the container: `docker start|restart|stop <container-name>` (NOTE: you *must* attach the console and send the `shutdown` command *before* stop or restart the container)
 
-To *delete* the container with `docker rm <container-name>`. Simulator files will be kept.
+- *Delete* the container with `docker rm <container-name>`. Simulator files will be kept.
 
-
-From your viewer, you should be able to access your simulator once configured via the local ip or dns name and configured port where Docker is running.
-Example: http://localhost:9000
+You should be able to access simulator's region (once configured) via the ip (or dns name) and port where the container it is running. Example: http://localhost:9000
 
 
 ## Advanced Usage
-This section is an ongoing work (commits are welcome!). By know, it's useful to mention that by using this image, you will be able to:
+This section is an ongoing work (commits are welcome!). By now, it's useful to mention that along with this image, you will be able to:
 
 - Dump a clean simulator folder tree onto a Docker volume or directly inside the container, and mount just the files you need to manage
-
 - Customize your entire settings firat, and dump either to a volume or inside the container, and run without mounts
-
 - You can add more mount points to import/export files (e.g. terrains, OARs, IARs, etc.)
-
 - You can connect to an existing DB server (e.g. MySQL) and this can be also another container
-
 - You can use this image *to build and deploy your own OpenSim Stack* with Docker composer, Kubernetes, etc.
 
-## To Do
+## TO DO
 
 - Create an entrypoint.sh to 'shutdown' the simulator gracefully.
