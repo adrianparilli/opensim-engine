@@ -1,25 +1,30 @@
 # OpenSim Engine -- Readme
 
 ## Overwiew:
-OpenSim Engine is intended to run OpenSim based simulators
-Although its main goal is to be part of a more elaborated solution to deploy simulators and/or grids, it can be used *as is* to test and even run (very simple) configurations inside containers.
+OpenSim Engine is intended to run OpenSim based simulators. Its main goal is to be part of a more elaborated solution to deploy simulators and/or grids, but can be used *as is* to test and even run (very simple) configurations inside containers.
 
 ## Features:
-- Built upon the latest version of Mono (6.xx)
+- Built upon the latest version of Mono
 - Contains minimal tools to download and manipulate ZIP compressed binaries inside the container
 - It runs OpenSim.exe onto a detachable console you can access the main screen, see status and use CLI.
 - Allows both standalone sims/grids (e.g. OpenSim, DivaDistro), and also connect your sims to existing grids (e.g. OSGrid)
 
-NOTE: The image does not provide the simulator files, you have to provide them yourself.
+NOTE: The image does not provide simulator files, you have to download/uncompress it yourself.
 
 ## Requirements:
 - Docker Engine. See [Docker Documentation](https://docs.docker.com/get-docker/) for further instructions
-- Main simulator folder tree uncompressed, and accessible by Docker with write permissions
+- Uncompressed main simulator folder tree, accessible by Docker with write permissions
 
 ### Basic Usage
 Useful for tests, and also for running very simple configurations (e.g. standalone and/or default SQLite setup):
 
-`docker run -it --restart=<restart-policy> --name <container-name> -v </path-to-main-folder>:/opensim -p 9XXX[-9YYY]:9XXX[-9YYY]/tcp -p 9XXX[-9YYY]:9XXX[-9YYY]/udp adrianparilli/opensim-engine[:<label>]`
+`docker run \
+-it --restart=<restart-policy> \
+--name <container-name> \
+-v </path-to-main-folder>:/opensim \
+-p 9XXX[-9YYY]:9XXX[-9YYY]/tcp \
+-p 9XXX[-9YYY]:9XXX[-9YYY]/udp \
+adrianparilli/opensim-engine[:<label>]`
 
 Where:
 `<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
