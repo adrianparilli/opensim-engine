@@ -1,4 +1,4 @@
-# OpenSim Engine -- Readme
+# OpenSim Engine
 
 ## Overwiew:
 OpenSim Engine is intended to run OpenSim based simulators. Its main goal is to be part of a more elaborated solution to deploy simulators and/or grids, but can be used *as is* to test and even run (very simple) configurations inside containers.
@@ -34,14 +34,10 @@ Useful for tests, and also for running very simple configurations (e.g. standalo
 
 Where:
 - `<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
-
 - `<container-name>`: Name you want to give for this container
-
 - `</path-to-main-folder>`: Absolute path to the main simulator folder tree (containing inside 'bin' and 'doc' directories)
-
 - `9XXX[-9YYY]:9XXX[-9YYY]`: Port [or ports range] mapped to this container from the host, in order to connect to simulator(s) from your viewer. Both tcp and udp are need to be declared apart.
-
-- `label`: If even provisioned, will use a specific version of this image. It should not be needed.
+- `label`: If even provisioned, will use a specific version of this image. It should not be needed. Default is `latest`
 
 ### Example:
 
