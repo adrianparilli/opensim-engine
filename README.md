@@ -15,7 +15,7 @@ NOTE: The image does not provide simulator files, you have to download/uncompres
 - Docker Engine. See [Docker Documentation](https://docs.docker.com/get-docker/) for further instructions
 - Uncompressed main simulator folder tree, accessible by Docker with write permissions
 
-### Basic Usage
+## Basic Usage
 Useful for tests, and also for running very simple configurations (e.g. standalone and/or default SQLite setup):
 
 `docker run \`
@@ -34,12 +34,16 @@ Useful for tests, and also for running very simple configurations (e.g. standalo
 
 Where:
 `<restart-policy>`: `no` `on-failure[max-retries]` `unless-stopped` or `always` (see [Restart Policies](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more info
+
 `<container-name>`: Name you want to give for this container
+
 `</path-to-main-folder>`: Absolute path to the main simulator folder tree (containing inside 'bin' and 'doc' directories)
+
 `9XXX[-9YYY]:9XXX[-9YYY]`: Port [or ports range] mapped to this container from the host, in order to connect to simulator(s) from your viewer. Both tcp and udp are need to be declared apart.
+
 `label`: If even provisioned, will use a specific version of this image. It should not be needed.
 
-#### Example:
+### Example:
 
 `docker run -it --name opensim-test -v /data/docker/opensim:/opensim -p 9000:9000/tcp -p 9000:9000/udp adrianparilli/opensim-engine`
 
@@ -59,7 +63,7 @@ From your viewer, you should be able to access your simulator once configured vi
 Example: http://localhost:9000
 
 
-### Advanced Usage
+## Advanced Usage
 This section is an ongoing work (commits are welcome!). By know, it's useful to mention that by using this image, you will be able to:
 
 - Dump a clean simulator folder tree onto a Docker volume or directly inside the container, and mount just the files you need to manage
@@ -72,6 +76,6 @@ This section is an ongoing work (commits are welcome!). By know, it's useful to 
 
 - You can use this image *to build and deploy your own OpenSim Stack* with Docker composer, Kubernetes, etc.
 
-# TO DO
+## To Do
 
 - Create an entrypoint.sh to 'shutdown' the simulator gracefully.
